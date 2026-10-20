@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_VERTICES 100
+
+// Graph represented using adjacency list
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+Node* adjList[MAX_VERTICES];
+int visited[MAX_VERTICES];
+
+// Function to create a new adjacency list node
+Node* createNode(int vertex) {
+    //write your code here...
+     Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode != NULL) {
+        newNode->vertex = vertex;
+        newNode->next = NULL;
+    }
+    return newNode;
+    
+    }
+            continue;
+        } else {
+            while (current != NULL) {
+                index = current->next;
+                while (index != NULL) {
+                    if (current->vertex > index->vertex) {
+                        temp = current->vertex;
+                        current->vertex = index->vertex;
+                        index->vertex = temp;
+                    }
+                    index = index->next;
+                }
+                current = current->next;
+            }
+        }
+	}
+    
+    
+    
+}
+
+// Depth-First Search (DFS) function
+void DFS(int start) {
+    //write your code here...
+     visited[start] = 1;
+    printf("%d ", start);
+
+    Node* temp = adjList[start];
+    while (temp != NULL) {
+        int connectedVertex = temp->vertex;
+        if (!visited[connectedVertex]) {
+            DFS(connectedVertex);
+        }
+        temp = temp->next;
+	}
+    
+    
+    
+}
+
+int main() {
+    int V, E;
+    int u, v, start;
+
+    // Read number of vertices and edges
+    scanf("%d %d", &V, &E);
+
+    // Initialize adjacency list
+    for (int i = 0; i < V; i++) {
+        adjList[i] = NULL;
+        visited[i] = 0;
+    }
+
+    // Read the edges
+    for (int i = 0; i < E; i++) {
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+
+    // Sort the adjacency list for each vertex
+    sortAdjList(V);
+
+    // Read the starting node
+    scanf("%d", &start);
+
+    // Perform DFS starting from the given node
+    DFS(start);
+
+    return 0;
+}
+    
