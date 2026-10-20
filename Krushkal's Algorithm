@@ -1,0 +1,110 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+int find(int i, int *parent) {
+    while (parent[i] != i)
+        i = parent[i];
+    return i;
+}
+
+// Helper function to unite two disjoint sets
+void unionSet(int i, int j, int *parent) {
+    int root_i = find(i, parent);
+    int root_j = find(j, parent);
+    if (root_i != root_j) {
+        parent[root_i] = root_j;
+    }
+}
+
+void kruskalMST(int **cost, int V) {
+
+	// Write your code here...
+int mincost = 0; // Cost of min MST
+    int edge_count = 0;
+
+    int *parent = (int *)malloc(V * sizeof(int));
+    for (int i = 0; i < V; i++) {
+        parent[i] = i; 
+    }
+
+    printf("\nEdges in the Minimum Spanning Tree:\n");
+
+    // The MST will have exactly V-1 edges
+    while (edge_count < V - 1) {
+        int min = INT_MAX, a = -1, b = -1;
+        
+
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+
+                if (cost[i][j] == 0) continue; 
+
+                if (find(i, parent) != find(j, parent) && cost[i][j] < min) {
+                    min = cost[i][j];
+
+                    a = i;
+                    b = j;
+                }
+            }
+        }
+
+        if (a != -1 && b != -1) {
+            unionSet(a, b, parent);
+            printf("Edge %d: (%d, %d) cost: %d\n", ++edge_count, a, b, min);
+            mincost += min;
+        } else {
+            printf("Graph is disconnected. MST cannot be formed.\n");
+            break; 
+        }
+    }
+    
+    if (edge_count == V - 1) {
+        printf("Minimum Cost = %d\n", mincost);
+    }
+
+    free(parent);
+}
+
+V
+ 
+→
+ Number of vertices in the graph
+cost
+ 
+→
+ Adjacency matrix storing edge weights
+
+
+Input Format:
+
+The first line of input reads an integer 
+V
+ by prompting "No of vertices: ", representing the number of vertices in the graph.
+The next 
+V
+×
+V
+ integers represent the adjacency matrix of the graph with a heading "Adjacency matrix:"
+int main() {
+    int V;
+    printf("No of vertices: ");
+    scanf("%d", &V);
+
+    int **cost = (int **)malloc(V * sizeof(int *));
+    for (int i = 0; i < V; i++)
+        cost[i] = (int *)malloc(V * sizeof(int));
+
+    printf("Adjacency matrix:\n");
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < V; j++)
+            scanf("%d", &cost[i][j]);
+
+    kruskalMST(cost, V);
+
+    for (int i = 0; i < V; i++)
+        free(cost[i]);
+    free(cost);
+
+    return 0;
+}
