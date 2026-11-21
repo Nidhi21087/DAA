@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int arr[100], subset[100][100];
+int sizes[100];
+int n, target, count = 0;
+
+void findSubsets(int index, int sum, int size, int current[]) {
+    if (sum == target) {
+        for (int i = 0; i < size; i++)
+            subset[count][i] = current[i];
+
+        sizes[count] = size;
+        count++;
+        return;
+    }
+
+    if (index == n || sum > target)
+        return;
+
+    current[size] = arr[index];
+    findSubsets(index + 1, sum + arr[index], size + 1, current);
+
+    findSubsets(index + 1, sum, size, current);
+}
